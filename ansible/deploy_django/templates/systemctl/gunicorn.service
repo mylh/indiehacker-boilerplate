@@ -1,0 +1,18 @@
+[Unit]
+Description="{{ app_name }} web application"
+After=network.target
+PartOf={{app_name}}_app.target
+
+[Service]
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ install_path }}/web/backend
+
+EnvironmentFile={{ install_path }}/app.env
+
+ExecStart={{ app_venv_path }}/bin/gunicorn {{ app_name }}.wsgi --log-file {{ install_path }}/logs/gunicorn.log -b 127.0.0.1:8000 --reload
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

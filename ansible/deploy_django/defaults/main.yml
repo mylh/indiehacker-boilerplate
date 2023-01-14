@@ -1,0 +1,66 @@
+---
+app_name: django_app
+clear_venv: false
+purge_before_install: false
+domain: localhost
+subdomains: []
+
+# User
+app_user: ubuntu
+app_group: www-data
+
+
+#APT packages
+apt_install:
+  - redis-server
+
+# Web root paths + app name + home
+install_path: /home/user/{{app_name}}
+django_root: "."
+
+# Code deployment from GIT repor
+deploy_from_git: False
+deployment_priv_key_path: deployment_key
+deployment_pub_key_path: deployment_key.pub
+git_repo: git@github.com:mylh/example.git
+
+# Sync from local
+deploy_from_local: True
+local_src_path: ..
+# Source code dirs (relative to local src path)
+source_items:
+  - src
+
+#ssl
+install_ssl: False
+ssl_crt_path: ../ssl
+
+# Virtualenvs
+virtualenv_root_path: "{{ install_path }}/virtualenvs"
+app_venv_path: "{{ virtualenv_root_path }}/{{app_name}}"
+
+# NGINX
+nginx_listen_address: "*"
+nginx_app_config: "{{ app_name }}_nginx.conf"
+nginx_hostname: "{{domain}}"
+
+nginx_serve_static: false
+nginx_static_path: "{{install_path}}/staticfiles"
+nginx_serve_media: false
+nginx_media_path: "{{install_path}}/mediafiles"
+nginx_domain_aliases: []
+nginx_client_max_body_size: "1M"
+
+nginx_basic_auth: false
+
+# Celery
+celery_wokrers: 4
+celery_log_level: INFO
+
+# GeoIP
+install_geoip: false
+geo_data_path: "{{install_path}}/geo"
+
+
+# Cronjobs
+install_cronjobs: false

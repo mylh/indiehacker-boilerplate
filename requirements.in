@@ -1,0 +1,35 @@
+django>=4.1,<5
+djangorestframework
+python-decouple
+dj_database_url
+django-log-request-id
+gunicorn
+whitenoise
+psutil
+ipython
+django-js-reverse
+requests
+python-dateutil
+django-crispy-forms
+crispy-bootstrap5
+pillow
+click
+
+# vite
+django-vite==2.0.2
+
+# celery
+celery[redis]
+celery-redbeat
+
+# GCE
+#google-api-python-client
+#google-cloud-storage
+
+# AI
+#openai
+#replicate
+
+# Optional
+# fabric>=2
+# psycopg2-binary

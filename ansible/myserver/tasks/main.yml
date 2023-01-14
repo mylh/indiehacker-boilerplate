@@ -1,0 +1,52 @@
+---
+- name: update package keys
+  shell: apt-key update
+
+- name: update package list
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: install packages
+  apt: pkg={{item}} state=present force=yes
+  with_items:
+    - ntp
+    - mc
+    - htop
+    - goaccess
+    - msmtp
+    - msmtp-mta
+    - mosh
+
+- name: create user
+  user:
+    name: "{{myserver_user}}"
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+
+- name: update sudoers
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{myserver_user}} ALL=(ALL) NOPASSWD:ALL"
+    state=present
+    insertafter=EOF
+    create=True
+
+- name: create ssh directory
+  file: name="/home/{{myserver_user}}/.ssh/" state=directory owner="{{myserver_user}}" group="{{myserver_user}}" mode="u=rwx,g=,o="
+  tags:
+    - install
+
+- name: deploy ssh keys
+  authorized_key:
+    user: "{{ myserver_user }}"
+    state: present
+    key: "{{ item }}"
+  with_file: "{{public_rsa_keys}}"
+
+- name: configure screen
+  copy: src=.screenrc dest=/home/{{myserver_user}}/.screenrc owner="{{myserver_user}}" group="{{myserver_user}}" mode="u=rw,g=,o="
+
+- name: configure smtp
+  template: src=msmtp.conf dest='/home/{{myserver_user}}/.msmtprc' owner="{{myserver_user}}" group="{{myserver_user}}" mode="u=rw,g=,o="
+  tags:
+    - msmtp

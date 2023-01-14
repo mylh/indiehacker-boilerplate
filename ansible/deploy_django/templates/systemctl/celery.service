@@ -1,0 +1,21 @@
+[Unit]
+Description="{{ app_name }} celery worker"
+After=network.target
+PartOf={{app_name}}_app.target
+
+[Service]
+Type=forking
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ install_path }}/web/backend
+
+EnvironmentFile={{ install_path }}/app.env
+
+ExecStart=/bin/sh -c '{{ app_venv_path }}/bin/celery multi start {{ celery_workers }} -A {{ app_name }} -l {{ celery_log_level }} --range-prefix=worker --concurrency=1 --logfile=${CELERYD_LOGFILE} --pidfile=${CELERYD_PIDFILE}'
+ExecStop=/bin/sh -c '{{ app_venv_path }}/bin/celery multi stopwait {{ celery_workers }} -A {{ app_name }} -l {{ celery_log_level }} --range-prefix=worker --concurrency=1 --logfile=${CELERYD_LOGFILE} --pidfile=${CELERYD_PIDFILE}'
+ExecReload=/bin/sh -c '{{ app_venv_path }}/bin/celery multi restart {{ celery_workers }}  -A {{ app_name }} -l {{ celery_log_level }} --range-prefix=worker --concurrency=1 --logfile=${CELERYD_LOGFILE} --pidfile=${CELERYD_PIDFILE}'
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

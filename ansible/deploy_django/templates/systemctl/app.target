@@ -1,0 +1,6 @@
+[Unit]
+After=network.target
+Wants={{ app_name }}_django.service {{ app_name }}_celery.service
+
+[Install]
+WantedBy=multi-user.target

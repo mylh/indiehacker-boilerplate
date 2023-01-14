@@ -1,0 +1,40 @@
+{
+    "name": "{{project_name}}-frontend",
+    "version": "0.0.1",
+    "private": true,
+    "description": "{{ project_name.title }} Frontend Application.",
+    "main": "index.js",
+    "dependencies": {
+        "@paypal/react-paypal-js": "^7.8.1",
+        "@popperjs/core": "^2.11.6",
+        "axios": "~0.21.1",
+        "bootstrap": "^5.2.2",
+        "cookie": "~0.4.0",
+        "moment": "2.20.x",
+        "moment-timezone": "0.5.x",
+        "react": "17.0.x",
+        "react-bootstrap": "^2.6.0",
+        "react-dom": "17.0.x",
+        "underscore": "1.8.x"
+    },
+    "devDependencies": {
+        "@types/node": "^18.11.9",
+        "@types/react": "^18.0.21",
+        "@typescript-eslint/eslint-plugin": "^5.40.1",
+        "@vitejs/plugin-react": "^2.1.0",
+        "autoprefixer": "^10.4.13",
+        "eslint": "^7.32.0",
+        "eslint-plugin-react": "^7.12.3",
+        "sass": "^1.56.0",
+        "tailwindcss": "^3.2.1",
+        "vite": "^3.1.8",
+        "vite-plugin-eslint": "^1.8.1",
+        "vite-tsconfig-paths": "^3.5.2"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint frontend"
+    }
+}

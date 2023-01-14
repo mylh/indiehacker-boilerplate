@@ -1,0 +1,9 @@
+myserver_user: ubuntu
+public_rsa_keys:
+  - ~/.ssh/id_rsa.pub
+
+msmtp_user: user
+msmtp_password: password
+msmtp_server: server
+mstmp_port: 465
+msmtp_from: noreply@domain

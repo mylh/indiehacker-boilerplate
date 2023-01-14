@@ -1,0 +1,187 @@
+---
+- name: update package keys
+  shell: apt-key update
+
+- name: update package list
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: install base apt dependencies
+  apt: pkg={{item}} state=present force=yes
+  with_items:
+      - build-essential
+      - gcc
+      - libpq-dev
+      - git
+      - python3
+      - python3-pip
+      - python3-dev
+      - python3-venv
+      - python3-virtualenv
+  tags:
+    - config
+
+- name: install additional apt packages
+  apt: pkg={{item}} state=present force=yes
+  with_items:
+    - "{{apt_install}}"
+  tags:
+    - config
+
+- name: Install and configure nginx
+  include_tasks: nginx.yaml
+
+- name: geoip
+  include_tasks: geoip2.yaml
+  when: install_geoip == True
+
+- name: delete everything
+  file: path="{{install_path}}" state=absent
+  when: purge_before_install
+  tags:
+    - purge
+
+- name: create directories
+  file: name="{{item}}" state=directory owner="{{app_user}}" group="{{app_group}}" mode="u=rwx,g=rwx,o=rwx"
+  with_items:
+    - "{{ install_path }}"
+    - "{{ install_path }}/logs"
+    - "{{ install_path }}/logs/celery"
+    - "{{ install_path }}/logs/nginx"
+    - "{{ nginx_media_path }}"
+    - "{{ nginx_static_path }}"
+    - "{{ virtualenv_root_path }}"
+    - "{{ app_venv_path }}"
+
+
+- name: create ssl directory
+  file: name="{{install_path}}/ssl" state=directory owner="{{app_user}}" group="{{app_group}}" mode="u=rwx,g=rwx,o="
+  when: install_ssl
+  tags:
+    - ssl
+
+- name: copy ssl keys
+  synchronize: src="{{ssl_crt_path}}" dest="{{install_path}}/ssl" delete=yes recursive=yes set_remote_user=no rsync_opts="--chown={{app_user}}:{{app_group}}"
+  become_user: "{{app_user}}"
+  become: True
+  when: install_ssl
+  notify: reload nginx
+  tags:
+    - ssl
+
+# deployment from GIT repo
+- name: copy deployment ssh keys
+  copy: src="{{item.value}}" dest="/home/{{ app_user }}/.ssh/{{item.key}}" mode="u=rw,g=,o=" force=True
+  become_user: "{{ app_user }}"
+  become: True
+  with_dict:
+    id_rsa: "{{ deployment_priv_key_path }}"
+    id_rsa.pub: "{{ deployment_pub_key_path }}"
+  when: deploy_from_git
+  tags:
+    - deploy
+
+- name: clone GIT repos
+  git: repo="{{ git_repo }}" dest="{{ install_path }}" accept_hostkey=yes force=yes
+  become_user: "{{ app_user }}"
+  become: True
+  when: deploy_from_git
+  notify:
+    - django migrate
+    - reload app
+  tags:
+    - deploy
+
+# deployment from local directory
+- name: copy src directory
+  synchronize:
+    src: "{{item}}"
+    dest: "{{ install_path }}"
+    delete: yes
+    recursive: yes
+    set_remote_user: yes
+    rsync_opts:
+      - "--chown={{app_user}}:{{app_group}}"
+      - "--exclude=*.pyc"
+      - "--exclude=logs"
+      - "--exclude=node_modules"
+      - "--exclude=*~"
+      - "--exclude=*.sqlite3"
+      - "--exclude=Dockerfile"
+      - "--exclude=*/mediafiles/*"
+      - "-O"
+  with_items:
+     - "{{ source_items }}"
+  become: True
+  become_user: "{{ app_user}} "
+  when: deploy_from_local
+  notify:
+    - django migrate
+    - reload app
+  tags:
+    - deploy
+
+- name: installing pip tools
+  shell: "pip install pip-tools"
+
+
+- name: remove previous venv
+  file: path='{{ app_venv_path }}' state=absent
+  when: clear_venv
+
+- name: create virtual enviroment
+  shell: virtualenv -p python3 '{{ app_venv_path }}' --system-site-packages
+
+
+- name: check if requirements.pip is present
+  stat: path='{{ install_path }}/requirements.in'
+  register: req_pip
+  tags:
+    - config
+
+- name: installing dependencies from requirements.pip
+  shell: "pip-compile requirements.in > requirements.txt && {{app_venv_path}}/bin/pip3 install -r requirements.txt"
+  args:
+    chdir: '{{ install_path }}'
+  notify:
+    - django migrate
+    - reload app
+  when: req_pip.stat.exists == True
+  tags:
+    - config
+
+- name: set permissions
+  file: path="{{item}}" state=directory
+        owner="{{ app_user }}" group="{{ app_group }}" recurse=yes
+  with_items:
+      - "{{install_path}}"
+  tags:
+    - deploy
+
+- name: Install env file
+  template: src=./app.env dest="{{install_path}}/app.env"
+  tags:
+    - config
+
+- name: Install systemctl services
+  template: src="systemctl/{{ item }}" dest="/etc/systemd/system/{{ app_name }}_{{ item }}"
+  with_items:
+    - gunicorn.service
+    - celery.service
+    - app.target
+  tags:
+    - config
+
+- name: Enable app service
+  systemd:
+    name: "{{item}}"
+    enabled: yes
+    masked: no
+  with_items:
+    - "{{ app_name }}_gunicorn"
+    - "{{ app_name }}_celery"
+  tags:
+    - config
+
+- name: Install and configure cronjobs
+  include_tasks: cronjobs.yaml
+  when: install_cronjobs

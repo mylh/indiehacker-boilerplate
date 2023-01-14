@@ -1,0 +1,28 @@
+---
+- hosts: web
+  become: True
+  become_user: root
+  roles:
+    - role: myserver
+    - role: deploy_django
+  vars:
+    myserver_user: user
+    public_rsa_keys:
+      - ~/.ssh/id_rsa.pub
+    app_user: user
+    app_name: {{ project_name }}
+    domain: example.com
+    nginx_client_max_body_size: "1M"
+    nginx_basic_auth: false
+    celery_log_level: INFO
+    celery_workers: 5
+    django_root: web/backend
+    source_items:
+      - ../web
+      - ../keys
+      - ../requirements.in
+    # msmtp_user: AWS_USER
+    # msmtp_password: AWS_SECRET
+    # msmtp_server: email-smtp.us-west-2.amazonaws.com
+    # msmtp_from: root@example.com
+    # msmtp_port: 2587

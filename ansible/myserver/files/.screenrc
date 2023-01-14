@@ -1,0 +1,4 @@
+# change escape key to Ctrl-z 
+escape ^Zz
+# display bottom caption line
+caption always "%{.bw}%-w%{.rw}%n %t%{-}%+w %-18=%{..y}%D %d-%M %c"

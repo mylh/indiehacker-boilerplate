@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+  # db:
+  #   image: postgres:alpine
+  #   environment:
+  #     POSTGRES_HOST_AUTH_METHOD: trust
+  #   volumes:
+  #     - ./1_create__user.sql:/docker-entrypoint-initdb.d/1_create_user.sql
+  #     - ./2_create_db.sql:/docker-entrypoint-initdb.d/2_create_db.sql
+  #     - {{ project_name }}_pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   container_name: {{project_name}}_db
+
+  # cache:
+  #   image: memcached:latest
+  #   ports:
+  #    - "11211:11211"
+  #   entrypoint:
+  #      - memcached
+  #      - -m 64
+  #   container_name: {{project_name}}_cache
+
+  # rabbit:
+  #   image: rabbitmq:alpine
+  #   container_name: {{project_name}}_rabbitmq
+
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    container_name: {{project_name}}_redis
+
+  celery:
+    build:
+      dockerfile: web/backend/Dockerfile
+      context: .
+    command: python manage.py celery
+    volumes:
+      - ./:/home/user/app/
+    env_file: web/backend/.env
+    depends_on:
+      - redis
+    container_name: {{project_name}}_celery
+
+
+  mailhog: # service for faking a SMTP server
+    image: mailhog/mailhog
+    ports:
+      - '1025:1025' # smtp server
+      - '8025:8025' # web ui
+    container_name: {{project_name}}_mailhog
+
+  web:
+    build:
+      context: .
+      dockerfile: web/backend/Dockerfile
+    volumes:
+      - ./:/home/user/app/
+      - /tmp:/tmp
+    ports:
+      - "8000:8000"
+    env_file: web/backend/.env
+    container_name: {{project_name}}_web
+
+
+  frontend:
+    build:
+      dockerfile: web/frontend/Dockerfile
+      context: .
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    container_name: {{project_name}}_frontend
+
+
+#volumes:
+#  {{project_name}}_pgdata:

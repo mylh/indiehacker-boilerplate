@@ -1,0 +1,4 @@
+time-format %H:%M:%S
+date-format %d/%b/%Y
+log-format %h %^[%d:%t %^] "%r" %s %b "%R" "%u"
+enable-panel REFERRERS

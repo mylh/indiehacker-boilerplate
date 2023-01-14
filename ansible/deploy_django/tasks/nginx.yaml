@@ -1,0 +1,45 @@
+---
+- name: install nginx webserver
+  apt: pkg=nginx-full state=present
+
+- name: configure nginx
+  template: src=nginx/app_nginx.conf dest=/etc/nginx/sites-available/{{ nginx_app_config }}
+  notify: reload nginx
+  tags:
+    - config
+
+- name: copy files
+  copy: src="{{item}}" dest="/etc/nginx/{{item}}"
+  with_items:
+    - .htpasswd
+  notify: reload nginx
+  tags:
+    - config
+
+- name: link to enable nginx configuration
+  file: state=link
+        src=/etc/nginx/sites-available/{{ nginx_app_config }}
+        path=/etc/nginx/sites-enabled/{{ nginx_app_config }}
+  notify: reload nginx
+  tags:
+    - config
+
+- name: disable default configuration
+  file: state=absent path=/etc/nginx/sites-enabled/default
+  notify: reload nginx
+
+- name: set nginx directories permissions
+  file: path={{ item }} state=directory
+        group={{ app_group }} mode=0755
+  with_items:
+      - /var/log/nginx
+      - /etc/nginx
+      - /etc/nginx/sites-available
+      - /etc/nginx/sites-enabled
+
+- name: set nginx logs permissions
+  file: path=/var/log/nginx/{{ item }} state=file
+        owner={{ app_group }} group={{ app_group }} mode=0644
+  with_items:
+      - access.log
+      - error.log

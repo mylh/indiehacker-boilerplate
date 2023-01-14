@@ -1,0 +1,44 @@
+- name: Add maxmind repo
+  apt_repository: repo='ppa:maxmind/ppa' update_cache=yes
+  tags:
+    - install
+
+- name: install geoip2 dependency packages
+  apt: pkg={{item}} state=present force=yes
+  with_items:
+    - libmaxminddb0
+    - libmaxminddb-dev
+  tags:
+    - install
+
+- name: create geo data directory
+  file: name="{{geo_data_path}}" state=directory owner={{app_user}} group={{app_group}} mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - install
+
+- name: creating cronjob file to update geo database
+  template: src=cronjobs/get_maxminddb.sh.j2 dest='{{install_path}}get_geo_db.sh'
+  become_user: ubuntu
+  become: True
+  tags:
+    - install
+
+- name: chmod job file
+  file: name="{{install_path}}get_geo_db.sh" mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - install
+
+- name: get geo db
+  shell: "{{install_path}}get_geo_db.sh"
+  tags:
+    - install
+
+- name: setup updatedb cronjob (run first tuesday of every month)
+  cron: minute="7" hour="12" day="1-7"
+        name="get geo db"
+        cron_file="{{app_name}}"
+        user="ubuntu"
+        job="[ \"$(date '+\%a')\" = \"Tue\" ] && {{install_path}}get_geo_db.sh"
+  tags:
+    - install
+    - cronjobs
