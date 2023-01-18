@@ -37,10 +37,7 @@ Feel free to start a PR, I'm open to any new technology and if it works better t
 
 In the next steps, always remember to replace `theprojectname` with your project's name
 - [ ] Above: don't forget the `--extension` and `--name` params!
-- [ ] Change the first line of README to the name of the project
-- [ ] Check default settings `theprojectname/web/backend/theprojectname/settings/base.py`
-- [ ] Configure vars in `ansible/web.yml` and take care of `app.env.example` before deployment
-- [ ] Add entry for `theprojectname-web` host in `~/.ssh/config`
+- [ ] Change the first line of README to the name of the project and update the rest of the file as needed
 - [ ] If you use Emacs and docker: escape project path in `docker-pylint.sh` and `run_pylint.sh` let me know if you aware about better way to integrate docker with Emacs
 
 
@@ -48,7 +45,7 @@ In the next steps, always remember to replace `theprojectname` with your project
 
 ### Configuring local
 
-- [ ] Adjust settings in `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/.env`
+- [ ] Adjust settings in `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/.env` these are used in local development with docker
 - [ ] start development container with `docker-compose up` and apply migrations by running `docker exec -it theprojectname_web python manage.py migrate`
 - [ ] create django admin superuser `docker exec -it theprojectname_web python manage.py createsuperuser`
 - [ ] go to http://localhost:8000 and check that website is loading
@@ -62,6 +59,8 @@ Then start docker containers with
 ## Deploying to Production
 
 - [ ] Go to `ansible` directory and update `hosts.inv` with IP address and access credentials to your web server
+- [ ] Configure vars in `ansible/web.yml`
+- [ ] Add entry for `theprojectname-web` host in `~/.ssh/config`
 - [ ] set `PROJECT_DOMAIN` in `wev/backend/theprojectname/settings/production` and in `ansible/web.yml`
 - [ ] copy `app.env.example` into `app.env` and update values as necessary
 
