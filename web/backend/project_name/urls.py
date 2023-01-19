@@ -39,6 +39,7 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path("accounts/", include("allauth.urls")),
     # !!! custom path to django admin
     path("my_{{ project_name}}_admin/", admin.site.urls, name="admin"),
     path("jsreverse/", django_js_reverse.views.urls_js, name="js_reverse"),

@@ -1,3 +1,7 @@
+import allauth.account.forms
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Invisible
+
 from django import forms
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -39,3 +43,19 @@ class SupportForm(forms.Form):
             reply_to=[reply],
         )
         msg.send(fail_silently=False)
+
+
+class InvisibleRecaptchaLoginForm(allauth.account.forms.LoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["captcha"] = ReCaptchaField(
+            widget=ReCaptchaV2Invisible(attrs={"data-badge": "inline"})
+        )
+
+
+class InvisibleRecaptchaSignupForm(allauth.account.forms.SignupForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["captcha"] = ReCaptchaField(
+            widget=ReCaptchaV2Invisible(attrs={"data-badge": "inline"})
+        )

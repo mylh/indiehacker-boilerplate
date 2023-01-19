@@ -61,7 +61,13 @@
           </a>
 
           <ul class="nav nav-pills mb-3 ">
-            <li class="nav-item"><a href="{% url 'index' %}" class="nav-link {% block menu_home_style %}{% endblock %}">Home</a></li>
+            <li class="nav-item"><a href="{% url 'index' %}" class="nav-link {% block menu_home %}{% endblock %}">Home</a></li>
+            {% if not user.is_authenticated %}
+              <li class="nav-item {% block menu_login %}{% endblock %}"><a class="nav-link" href="{% url 'account_login' %}" rel="nofollow">Login</a></li>
+              <li class="nav-item {% block menu_signup %}{% endblock %}"><a class="nav-link" href="{% url 'account_signup' %}" rel="nofollow">Sign Up</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}" rel="nofollow">Log out</a></li>
+            {% endif %}
           </ul>
         </header>
       </div>

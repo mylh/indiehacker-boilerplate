@@ -35,11 +35,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+    "django.contrib.sites",
     "django_js_reverse",
     "django_vite",
     "rest_framework",
     "crispy_forms",
     "crispy_bootstrap5",
+    # django_allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # project apps
     "core",
 ]
@@ -53,6 +58,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 ROOT_URLCONF = "{{ project_name }}.urls"
@@ -159,6 +171,24 @@ django.utils.encoding.force_text = force_str
 # Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# allauth
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = "/app/"
+
+# Uncomment this if you want to protect login and signup forms with reCAPTCHA
+# INSTALLED_APPS += ["captcha"]
+# ACCOUNT_FORMS = {
+#     "login": "core.forms.InvisibleRecaptchaLoginForm",
+#     "signup": "core.forms.InvisibleRecaptchaSignupForm",
+# }
+# RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY")
+# RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY")
+
 
 LOGGING = {
     "version": 1,
