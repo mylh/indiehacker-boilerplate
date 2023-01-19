@@ -4,6 +4,7 @@
 
 Django project template with many useful libraries and integrations included:
  - Django with sqlite database at backend
+ - Customized [django_allauth](https://django-allauth.readthedocs.io/en/latest/index.html) app for login/signup flows. Optionally protect login/signup forms with Google ReCAPTCHA
  - React, Bootstrap (optionally Tailwind CSS) at frontend
  - NodeJS and Vite to build frontend and serve it on development
  - [WhiteNoise](http://whitenoise.evans.io/en/stable/) for cache serving (optionally via Nginx on production)
@@ -45,7 +46,7 @@ In the next steps, always remember to replace `theprojectname` with your project
 
 ### Configuring local
 
-- [ ] Adjust settings in `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/.env` these are used in local development with docker
+- [ ] Adjust settings in `web/backend/theprojectname/settings/base.py` and `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/.env` these are used in local development with docker
 - [ ] start development container with `docker-compose up` and apply migrations by running `docker exec -it theprojectname_web python manage.py migrate`
 - [ ] create django admin superuser `docker exec -it theprojectname_web python manage.py createsuperuser`
 - [ ] go to http://localhost:8000 and check that website is loading
