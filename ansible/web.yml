@@ -16,6 +16,7 @@
     nginx_basic_auth: false
     celery_log_level: INFO
     celery_workers: 5
+    app_gunicorn_port: 8000
     django_root: web/backend
     source_items:
       - ../web

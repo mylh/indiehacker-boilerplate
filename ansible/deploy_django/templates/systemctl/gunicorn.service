@@ -10,7 +10,7 @@ WorkingDirectory={{ install_path }}/web/backend
 
 EnvironmentFile={{ install_path }}/app.env
 
-ExecStart={{ app_venv_path }}/bin/gunicorn {{ app_name }}.wsgi --log-file {{ install_path }}/logs/gunicorn.log -b 127.0.0.1:8000 --reload
+ExecStart={{ app_venv_path }}/bin/gunicorn {{ app_name }}.wsgi --log-file {{ install_path }}/logs/gunicorn.log -b 127.0.0.1:{{ app_gunicorn_port }} --reload
 
 Restart=always
 

@@ -39,6 +39,9 @@ ssl_crt_path: ../ssl
 virtualenv_root_path: "{{ install_path }}/virtualenvs"
 app_venv_path: "{{ virtualenv_root_path }}/{{app_name}}"
 
+# Gunicorn
+app_gunicorn_port: 8000
+
 # NGINX
 nginx_listen_address: "*"
 nginx_app_config: "{{ app_name }}_nginx.conf"
