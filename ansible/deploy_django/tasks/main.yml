@@ -29,6 +29,8 @@
 
 - name: Install and configure nginx
   include_tasks: nginx.yaml
+  tags:
+    - config
 
 - name: geoip
   include_tasks: geoip2.yaml

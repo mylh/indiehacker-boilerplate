@@ -48,9 +48,9 @@ nginx_app_config: "{{ app_name }}_nginx.conf"
 nginx_hostname: "{{domain}}"
 
 nginx_serve_static: false
-nginx_static_path: "{{install_path}}/staticfiles"
+nginx_static_path: "{{install_path}}/staticfiles/"
 nginx_serve_media: false
-nginx_media_path: "{{install_path}}/mediafiles"
+nginx_media_path: "{{install_path}}/mediafiles/"
 nginx_domain_aliases: []
 nginx_client_max_body_size: "1M"
 
