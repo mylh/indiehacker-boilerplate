@@ -9,7 +9,7 @@ from {{ project_name }}.celery import app
 
 logger = get_task_logger(__name__)
 
-@app.task()
+@app.task(queue='{{ project_name }}_celery')
 def test_celery():
     print("Celery working")
     return True
