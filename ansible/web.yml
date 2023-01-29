@@ -22,6 +22,7 @@
       - ../web
       - ../keys
       - ../requirements.in
+      - ./setenv.sh
     # msmtp_user: AWS_USER
     # msmtp_password: AWS_SECRET
     # msmtp_server: email-smtp.us-west-2.amazonaws.com
