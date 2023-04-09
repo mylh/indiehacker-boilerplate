@@ -8,7 +8,7 @@
         "@paypal/react-paypal-js": "^7.8.1",
         "@popperjs/core": "^2.11.6",
         "axios": "~0.21.1",
-        "bootstrap": "^5.2.2",
+        "bootstrap": "5.3.0-alpha3",
         "cookie": "~0.4.0",
         "moment": "2.20.x",
         "moment-timezone": "0.5.x",

@@ -1,6 +1,6 @@
 {% load django_vite static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="auto">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -82,7 +82,12 @@
           <div class="row">
             <div class="col">
               &copy; {% now 'Y' %} ProjectName by <a target="_blank" href="https://mylh.me">mylh</a> / <a href="{% url 'terms' %}">Terms of Service</a> / <a href="{% url 'support' %}">Support</a> <br/>
-              Follow us <a href="https://twitter.com/dima7" target="_blank"><i class="bi bi-twitter"></i> DimaS</a>
+              Follow us <a href="https://twitter.com/dima7" target="_blank"><i class="bi bi-twitter"></i> DimaS</a> / <a class="theme-switcher" title="Switch Theme" href="#">
+                <i class="theme-light d-none bi bi-sun"></i>
+                <i class="theme-dark d-none bi bi-moon-stars"></i>
+                <i class="theme-auto d-none bu bi-circle-half"></i>
+                Theme: <span id="color-theme-name"></spen>
+              </a>
             </div>
           </div>
         </div>
