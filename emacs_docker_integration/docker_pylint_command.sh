@@ -1,0 +1,4 @@
+#!/bin/bash
+output=$(docker exec -i $CONTAINER_NAME pylint $1 "$2" ${3/$PROJECT_ROOT/$CONTAINER_ROOT} ${4/$PROJECT_ROOT/$CONTAINER_ROOT} ${5/$PROJECT_ROOT/$CONTAINER_ROOT} ${6/$PROJECT_ROOT/$CONTAINER_ROOT})
+echo $output
+exit 0

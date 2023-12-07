@@ -58,6 +58,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # django-allauth
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -181,13 +183,13 @@ SOCIALACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = "/app/"
 
 # Uncomment this if you want to protect login and signup forms with reCAPTCHA
-# INSTALLED_APPS += ["captcha"]
-# ACCOUNT_FORMS = {
-#     "login": "core.forms.InvisibleRecaptchaLoginForm",
-#     "signup": "core.forms.InvisibleRecaptchaSignupForm",
-# }
-# RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY")
-# RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY")
+INSTALLED_APPS += ["django_recaptcha"]
+ACCOUNT_FORMS = {
+    "login": "core.forms.InvisibleRecaptchaLoginForm",
+    "signup": "core.forms.InvisibleRecaptchaSignupForm",
+}
+RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY")
 
 
 LOGGING = {

@@ -1,4 +1,4 @@
-django>=4.1,<5
+django>=5.0,<4
 djangorestframework
 python-decouple
 dj_database_url
