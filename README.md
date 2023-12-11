@@ -17,6 +17,7 @@ Django project template with many useful libraries and integrations included:
  - Docker Compose setup with Dockerfiles for local development inside containers
  - Emacs docker integration files
  - Vagratfile to run VM if needed (for testing deployment, etc)
+ - Utilities
 
 After bootsrtapping a project it creates a default `core` application with homepage containing dummy React component with PayPal pay now button and backend API to handle payment
 
@@ -113,3 +114,10 @@ Configure local ssh access by running
     vagrant ssh-config >> ~/.ssh/config
 
 Uncomment vagrant host in `ansible/hosts.inv`
+
+## Utilities
+
+Automatically convert input image into set of popular web-development icons sizes, produces output files as logo_256x256.png, etc
+
+    ./convert_icons.sh logo.png
+
