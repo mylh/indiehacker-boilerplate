@@ -31,6 +31,7 @@
   include_tasks: nginx.yaml
   tags:
     - config
+    - nginx
 
 - name: geoip
   include_tasks: geoip2.yaml

@@ -7,6 +7,7 @@
   notify: reload nginx
   tags:
     - config
+    - nginx
 
 - name: copy files
   copy: src="{{item}}" dest="/etc/nginx/{{item}}"
@@ -15,6 +16,7 @@
   notify: reload nginx
   tags:
     - config
+    - nginx
 
 - name: link to enable nginx configuration
   file: state=link
@@ -23,6 +25,7 @@
   notify: reload nginx
   tags:
     - config
+    - nginx
 
 - name: disable default configuration
   file: state=absent path=/etc/nginx/sites-enabled/default
