@@ -6,42 +6,42 @@
 {% block menu_signup %} class="active"{% endblock %}
 
 {% block content %}
-  <div class="login-form">
-    <h1>{% trans "Sign Up" %}</h1>
-    <div class="row no-bg no-pad">
-      <div class="col-md-12">
-        <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-      </div>
-    </div>
-    <div class="row no-bg">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-              {% csrf_token %}
-              {{ form|crispy }}
-              {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-              {% endif %}
-
-              <p>
-                I agree with <a target="_blank" href="{% url 'terms' %}">Terms of Service</a>
-              </p>
-              <button class="btn btn-primary btn-cta" type="submit">{% trans "Agree & Sign Up" %}</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-xs-12 button-wrapper">
-        {% get_providers as socialaccount_providers %}
-        {% if socialaccount_providers %}
-          <p>Sign up with one of your existing social accounts. By clicking button below your agree with <a target="_blank" href="{% url 'terms' %}">Terms of Service</a></p>
-          <p class="socialaccount_ballot">
-            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-          </p>
-          {% include "socialaccount/snippets/login_extra.html" %}
-      {% endif %}
-      </div>
+<div class="login-form">
+  <h1>{% trans "Sign Up" %}</h1>
+  <div class="row no-bg no-pad">
+    <div class="col-md-12">
+      <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
     </div>
   </div>
+  <div class="row no-bg">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+
+            <p>
+              I agree with <a target="_blank" href="{% url 'terms' %}">Terms of Service</a>
+            </p>
+            <button class="btn btn-primary btn-cta" type="submit">{% trans "Agree & Sign Up" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xs-12 button-wrapper">
+      {% get_providers as socialaccount_providers %}
+      {% if socialaccount_providers %}
+      <p>Sign up with one of your existing social accounts. By clicking button below your agree with <a target="_blank" href="{% url 'terms' %}">Terms of Service</a></p>
+      <p class="socialaccount_ballot">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+      </p>
+      {% include "socialaccount/snippets/login_extra.html" %}
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

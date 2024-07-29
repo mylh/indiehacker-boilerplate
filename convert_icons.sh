@@ -16,7 +16,7 @@ fi
 input_image="$1"
 
 # List of icon sizes
-sizes=("16x16" "32x32" "48x48" "64x64" "128x128" "256x256" "512x512")
+sizes=("16x16" "32x32" "48x48" "180x180" "192x192" "512x512")
 
 # Loop through sizes and create icons
 for size in "${sizes[@]}"; do

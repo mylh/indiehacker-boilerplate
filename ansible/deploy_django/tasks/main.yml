@@ -109,6 +109,7 @@
       - "--exclude=node_modules"
       - "--exclude=*~"
       - "--exclude=*.sqlite3"
+      - "--exclude=*.env"
       - "--exclude=Dockerfile"
       - "--exclude=*/mediafiles/*"
       - "-O"
@@ -135,14 +136,14 @@
   shell: virtualenv -p python3 '{{ app_venv_path }}' --system-site-packages
 
 
-- name: check if requirements.pip is present
-  stat: path='{{ install_path }}/requirements.in'
+- name: check if requirements.txt is present
+  stat: path='{{ install_path }}/requirements.txt'
   register: req_pip
   tags:
     - config
 
-- name: installing dependencies from requirements.pip
-  shell: "pip-compile requirements.in > requirements.txt && {{app_venv_path}}/bin/pip3 install -r requirements.txt"
+- name: installing dependencies from requirements.txt
+  shell: "{{app_venv_path}}/bin/pip-sync"
   args:
     chdir: '{{ install_path }}'
   notify:
@@ -164,6 +165,20 @@
   template: src=./app.env dest="{{install_path}}/app.env"
   tags:
     - config
+    - env
+  notify:
+    - reload app
+
+- name: Install Django Update file
+  template:
+    src: ./update_django.sh
+    dest: "{{install_path}}/update_django.sh"
+    mode: u=rwx,g=rx,o=rx
+  tags:
+    - config
+  notify:
+    - reload app
+
 
 - name: Install systemctl services
   template: src="systemctl/{{ item }}" dest="/etc/systemd/system/{{ app_name }}_{{ item }}"
@@ -173,6 +188,7 @@
     - app.target
   tags:
     - config
+
 
 - name: Enable app service
   systemd:

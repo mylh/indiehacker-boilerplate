@@ -1,7 +1,6 @@
 - name: django migrate
-  shell: 'sudo -H -u {{ app_user }} bash -c "source {{install_path}}/app.env && {{app_venv_path}}/bin/python ./manage.py collectstatic --noinput; {{app_venv_path}}/bin/python ./manage.py migrate --noinput;"'
-  args:
-    chdir: '{{ install_path }}/{{ django_root }}'
+  shell: "{{install_path}}/update_django.sh"
+
 
 - name: reload nginx
   shell: service nginx reload

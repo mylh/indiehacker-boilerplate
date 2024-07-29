@@ -16,9 +16,13 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "mailhog"
 EMAIL_PORT = 1025
 
-
 JS_REVERSE_JS_MINIFY = False
 
 INTERNAL_IPS = ["172.20.0.1", "127.0.0.1"]
 
 DJANGO_VITE_DEV_MODE = DEBUG
+
+# Whitenoise
+INSTALLED_APPS = INSTALLED_APPS + [
+    "whitenoise.runserver_nostatic",
+]

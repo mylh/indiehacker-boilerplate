@@ -1,10 +1,11 @@
-django>=5.0,<4
+django>=5.0
 djangorestframework
 python-decouple
 dj_database_url
 django-log-request-id
 gunicorn
 whitenoise
+whitenoise[brotli]
 psutil
 ipython
 django-js-reverse

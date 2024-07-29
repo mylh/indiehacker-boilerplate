@@ -124,9 +124,8 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = "/static/"
+STATIC_HOST = config("DJANGO_STATIC_HOST", default="")
+STATIC_URL = STATIC_HOST + "/static/"
 
 # vite config
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / ".." / "frontend" / "dist"
@@ -213,18 +212,6 @@ LOGGING = {
         },
     },
     "handlers": {
-        "request.file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": "/tmp/django.log",
-            "formatter": "verbose",
-        },
-        "pay": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": "/tmp/pay.log",
-            "formatter": "verbose",
-        },
         "console": {
             "level": "DEBUG",
             "filters": ["require_debug_true"],
@@ -238,12 +225,12 @@ LOGGING = {
             "handlers": ["console"],
         },
         "pay": {
-            "handlers": ["pay", "console"],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": True,
         },
         "django.request": {
-            "handlers": ["request.file", "console"],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": True,
         },

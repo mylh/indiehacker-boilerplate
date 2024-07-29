@@ -3,7 +3,7 @@
 ## About
 
 Django project template with many useful libraries and integrations included:
- - Django with sqlite database at backend
+ - Django with sqlite/postgresql database at backend
  - Customized [django_allauth](https://django-allauth.readthedocs.io/en/latest/index.html) app for login/signup flows. Optionally protect login/signup forms with Google ReCAPTCHA
  - React, Bootstrap (optionally Tailwind CSS) at frontend
  - NodeJS and Vite to build frontend and serve it on development
@@ -34,7 +34,7 @@ Feel free to start a PR, I'm open to any new technology and if it works better t
 - [ ] Open the command line and go to the directory you want to start your project in.
 - [ ] Start your project in current directory using (`theprojectname` can only contain alphanumeric chars and underscore):
     ```
-    django-admin startproject theprojectname . --extension=py,sh --name=package.json,Dockerfile,hosts.inv,web.yml,docker-compose.yml,.env,Vagrantfile,.dir-locals.el --template=https://github.com/mylh/indiehacker-boilerplate/archive/refs/heads/master.zip
+    django-admin startproject theprojectname . --extension=py,sh --name=package.json,Dockerfile,hosts.inv,web.yml,docker-compose.yml,local_dev.env,Vagrantfile,.dir-locals.el --template=https://github.com/mylh/indiehacker-boilerplate/archive/refs/heads/master.zip
     ```
 
 In the next steps, always remember to replace `theprojectname` with your project's name
@@ -47,7 +47,7 @@ In the next steps, always remember to replace `theprojectname` with your project
 
 ### Configuring local
 
-- [ ] Adjust settings in `web/backend/theprojectname/settings/base.py` and `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/.env` these are used in local development with docker
+- [ ] Adjust settings in `web/backend/theprojectname/settings/base.py` and `web/backend/theprojectname/settings/local.py` and secrets in `web/backend/local_dev.env` these are used in local development with docker
 - [ ] start development container with `docker compose up` and apply migrations by running `docker compose exec -it web python manage.py migrate`
 - [ ] create django admin superuser `docker compose exec -it web python manage.py createsuperuser`
 - [ ] go to http://localhost:8000 and check that website is loading
@@ -120,4 +120,3 @@ Uncomment vagrant host in `ansible/hosts.inv`
 Automatically convert input image into set of popular web-development icons sizes, produces output files as logo_256x256.png, etc
 
     ./convert_icons.sh logo.png
-
