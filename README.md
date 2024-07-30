@@ -34,7 +34,7 @@ Feel free to start a PR, I'm open to any new technology and if it works better t
 - [ ] Open the command line and go to the directory you want to start your project in.
 - [ ] Start your project in current directory using (`theprojectname` can only contain alphanumeric chars and underscore):
     ```
-    django-admin startproject theprojectname . --extension=py,sh --name=package.json,Dockerfile,hosts.inv,web.yml,docker-compose.yml,local_dev.env,Vagrantfile,.dir-locals.el --template=https://github.com/mylh/indiehacker-boilerplate/archive/refs/heads/master.zip
+    django-admin startproject theprojectname . --extension=py,sh,sql --name=package.json,Dockerfile,hosts.inv,web.yml,docker-compose.yml,local_dev.env,Vagrantfile,.dir-locals.el --template=https://github.com/mylh/indiehacker-boilerplate/archive/refs/heads/master.zip
     ```
 
 In the next steps, always remember to replace `theprojectname` with your project's name

@@ -11,6 +11,12 @@ services:
       - "8000:8000"
     env_file: web/backend/local_dev.env
     container_name: {{project_name}}_web
+  # depends_on:
+  #   - db
+  #   - rabbit
+  #   - memcache
+  #   - redis
+
 
   frontend:
     build:
@@ -24,12 +30,12 @@ services:
     container_name: {{project_name}}_frontend
 
   # db:
-  #   image: postgres:alpine
+  #   image: postgres:16-alpine
   #   environment:
   #     POSTGRES_HOST_AUTH_METHOD: trust
   #   volumes:
-  #     - ./1_create__user.sql:/docker-entrypoint-initdb.d/1_create_user.sql
-  #     - ./2_create_db.sql:/docker-entrypoint-initdb.d/2_create_db.sql
+  #     - ./dev/1_create_postgres_user.sql:/docker-entrypoint-initdb.d/1_create_user.sql
+  #     - ./dev/2_create_postgres_db.sql:/docker-entrypoint-initdb.d/2_create_db.sql
   #     - {{ project_name }}_pgdata:/var/lib/postgresql/data
   #   ports:
   #     - "5432:5432"
