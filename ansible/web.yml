@@ -22,7 +22,6 @@
     django_root: web/backend
     source_items:
       - ../web
-      - ../keys
       - ../requirements.in
       - ./setenv.sh
     # msmtp_user: AWS_USER
