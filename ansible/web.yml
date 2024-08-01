@@ -22,7 +22,7 @@
     django_root: web/backend
     source_items:
       - ../web
-      - ../requirements.in
+      - ../requirements.txt
       - ./setenv.sh
     # msmtp_user: AWS_USER
     # msmtp_password: AWS_SECRET

@@ -65,6 +65,8 @@ Then start docker containers with
 - [ ] Add entry for `theprojectname-web` host in `~/.ssh/config`
 - [ ] set `PROJECT_DOMAIN` in `wev/backend/theprojectname/settings/production` and in `ansible/web.yml`
 - [ ] copy `app.env.example` into `app.env` and update values as necessary
+- [ ] compile requirements.txt from requirements.in using pip-compile (locally or via container)
+- [ ] build production static bundle by executing in frontend container `docker compose exec -it frontend npm run build`
 
 Run for full deployment including installation and configuration of all necessary services such as nginx, gunicorn, etc:
 
