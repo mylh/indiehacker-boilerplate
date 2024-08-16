@@ -1,9 +1,23 @@
-- name: Install cron job CRONJOBNAME
-  cron: hour="*" minute="*"
-        name="cronjob name"
+#
+# Template for a new job
+#
+# - name: Install cron job CRONJOBNAME
+#   cron: hour="*" minute="*"
+#         name="cronjob name"
+#         cron_file="{{ app_name }}"
+#         user="{{ app_user }}"
+#         job='bash -c "env $(cat {{ install_path }}/app.env | grep -v "#" | xargs) {{app_venv_path}}/bin/python {{ install_path }}/{{ django_root }}/manage.py YOURCOMMAND >> {{ install_path}}/logs/cronjob.log 2>&1"'
+#   tags:
+#     - config
+#     - cronjobs
+
+
+- name: Django clear sessions job
+  cron: hour="0" minute="21" day="*" weekday="1"
+        name="clearsessions"
         cron_file="{{ app_name }}"
         user="{{ app_user }}"
-        job='bash -c "env $(cat {{ install_path }}/app.env | grep -v "#" | xargs) {{app_venv_path}}/bin/python {{ install_path }}/{{ django_root }}/manage.py YOURCOMMAND >> {{ install_path}}/logs/cronjob.log 2>&1"'
+        job='bash -c "env $(cat {{ install_path }}/app.env | grep -v "#" | xargs) {{app_venv_path}}/bin/python {{ install_path }}/{{ django_root }}/manage.py clearsessions >> {{ install_path}}/logs/cronjob.log 2>&1"'
   tags:
     - config
     - cronjobs
