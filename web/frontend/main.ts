@@ -1,6 +1,4 @@
 // import pages
-import './js/theme_toggler.js';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'vite/modulepreload-polyfill';
