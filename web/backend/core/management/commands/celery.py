@@ -11,9 +11,7 @@ import psutil
 
 def restart_celery():
     for proc in psutil.process_iter():
-        if (
-            proc.username() != getpass.getuser()
-        ):  # skip processes not owned by user
+        if proc.username() != getpass.getuser():  # skip processes not owned by user
             continue
         if proc.name() != "celery":
             continue
@@ -24,7 +22,7 @@ def restart_celery():
         celery_proc = proc  # found parent celery process
         celery_proc.terminate()
         break
-    cmd = "celery -A {{project_name}} worker -l INFO"
+    cmd = "celery -A {{project_name}} worker -l INFO -c 1"
     psutil.Popen(shlex.split(cmd), stdout=PIPE)
 
 
