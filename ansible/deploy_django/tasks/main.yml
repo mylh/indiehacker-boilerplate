@@ -203,5 +203,8 @@
     - config
 
 - name: Install and configure cronjobs
-  include_tasks: cronjobs.yaml
+  include_tasks: cronjobs.yml
   when: install_cronjobs
+  tags:
+    - config
+    - cronjobs

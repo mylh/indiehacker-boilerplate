@@ -20,6 +20,7 @@
     celery_workers: 5
     app_gunicorn_port: 8000
     django_root: web/backend
+    install_cronjobs: false
     source_items:
       - ../web
       - ../requirements.txt
