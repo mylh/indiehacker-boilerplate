@@ -10,8 +10,8 @@
   with_items:
       - build-essential
       - gcc
-      - libpq-dev
       - git
+      - libpq-dev
       - python3
       - python3-pip
       - python3-dev
@@ -47,6 +47,7 @@
   file: name="{{item}}" state=directory owner="{{app_user}}" group="{{app_group}}" mode="u=rwx,g=rwx,o=rwx"
   with_items:
     - "{{ install_path }}"
+    - "{{ install_path }}/config"
     - "{{ install_path }}/logs"
     - "{{ install_path }}/logs/celery"
     - "{{ install_path }}/logs/nginx"
@@ -54,6 +55,17 @@
     - "{{ nginx_static_path }}"
     - "{{ virtualenv_root_path }}"
     - "{{ app_venv_path }}"
+
+
+- name: link remote folders with webapp home folder
+  file: state=link
+        path={{ web_root_path }}{{ item.value }}
+        src={{ item.key }}
+        owner={{ app_user }} group={{ app_group }} mode=0774
+  with_dict:
+      /etc/nginx: config/nginx
+      /etc/systemd/: config/systemd
+      /var/log/nginx: logs/nginx
 
 
 - name: create ssl directory
@@ -104,6 +116,7 @@
     set_remote_user: yes
     rsync_opts:
       - "--chown={{app_user}}:{{app_group}}"
+      - "--exclude=__pycache__"
       - "--exclude=*.pyc"
       - "--exclude=logs"
       - "--exclude=node_modules"

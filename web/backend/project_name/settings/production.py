@@ -85,13 +85,13 @@ LOGGING = {
         "app.log": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/home/user/{{ project_name }}/logs/django.log",
+            "filename": INSTALL_PATH / "logs/django.log",
             "formatter": "verbose",
         },
         "pay": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/home/user/{{ project_name }}/logs/pay.log",
+            "filename": INSTALL_PATH / "logs/pay.log",
             "formatter": "verbose",
         },
         "console": {
